@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>One Recording Becomes Everything | For Joel Mccleoud</title>
+<title>The Episode Engine | For Joel Mccleoud</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -13,133 +13,124 @@
     line-height: 1.6;
   }
   .wrap { max-width: 1060px; margin: 0 auto; padding: 48px 24px 96px; }
-  .logo { display: block; margin: 0 auto 56px; width: 88px; }
+  .logo { display: block; margin: 0 auto 48px; width: 80px; }
   .eyebrow {
-    text-align: center;
-    font-size: 13px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #8a8a8a;
-    margin-bottom: 18px;
+    text-align: center; font-size: 13px; letter-spacing: 3px;
+    text-transform: uppercase; color: #8a8a8a; margin-bottom: 16px;
   }
   h1 {
-    text-align: center;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(34px, 5.4vw, 58px);
-    font-weight: 700;
-    line-height: 1.12;
-    margin-bottom: 22px;
+    text-align: center; font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(32px, 5vw, 52px); font-weight: 700; line-height: 1.12; margin-bottom: 18px;
   }
   h1 .hl { background: #f26522; color: #fff; padding: 0 14px; }
-  .sub {
-    text-align: center;
-    max-width: 640px;
-    margin: 0 auto 64px;
-    font-size: 18px;
-    color: #4a4a4a;
+  .sub { text-align: center; max-width: 600px; margin: 0 auto 48px; font-size: 17px; color: #4a4a4a; }
+
+  .genbox { border: 2px solid #f26522; border-radius: 18px; padding: 32px 28px; margin-bottom: 24px; }
+  .genbox .lbl { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #f26522; font-weight: 700; margin-bottom: 14px; }
+  .picker { display: grid; gap: 12px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .picker { grid-template-columns: 1fr 1fr 1fr; } }
+  .pick {
+    cursor: pointer; border: 2px solid #ececec; border-radius: 12px;
+    overflow: hidden; background: #fff; text-align: left; position: relative;
+    transition: border-color .15s;
   }
-  .tabs { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 56px; }
-  .tab {
-    cursor: pointer;
-    border: 2px solid #ececec;
-    border-radius: 14px;
-    overflow: hidden;
-    width: 280px;
-    background: #fff;
-    transition: border-color .2s, transform .2s;
-    text-align: left;
+  .pick:hover { border-color: #f8b694; }
+  .pick.on { border-color: #f26522; }
+  .pick .tick {
+    position: absolute; top: 10px; right: 10px; width: 26px; height: 26px;
+    border-radius: 50%; background: #f26522; color: #fff; font-size: 15px;
+    font-weight: 700; display: none; align-items: center; justify-content: center; z-index: 2;
   }
-  .tab:hover { transform: translateY(-3px); }
-  .tab.active { border-color: #f26522; }
-  .tab img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
-  .tab .tmeta { padding: 12px 14px 14px; }
-  .tab .tt { font-weight: 700; font-size: 15px; line-height: 1.35; }
-  .tab .td { font-size: 13px; color: #8a8a8a; margin-top: 4px; }
-  .episode { display: none; }
+  .pick.on .tick { display: flex; }
+  .pick img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+  .pick .pm { padding: 10px 12px 12px; }
+  .pick .pt { font-weight: 700; font-size: 14px; line-height: 1.3; }
+  .pick .pd { font-size: 12.5px; color: #8a8a8a; margin-top: 3px; }
+
+  .orline { text-align: center; color: #b0b0b0; font-size: 13px; margin: 20px 0 12px; letter-spacing: 1px; }
+  .linkrow { display: flex; gap: 10px; }
+  .linkrow input {
+    flex: 1; border: 1.5px solid #e2e2e2; border-radius: 10px; padding: 12px 16px;
+    font-size: 15px; outline: none;
+  }
+  .linkrow input:focus { border-color: #f26522; }
+  .linkrow button {
+    border: none; background: #16161a; color: #fff; font-weight: 700; font-size: 14px;
+    border-radius: 10px; padding: 0 22px; cursor: pointer;
+  }
+  .genbtn {
+    display: block; width: 100%; margin-top: 22px; border: none; background: #f26522;
+    color: #fff; font-size: 18px; font-weight: 800; letter-spacing: 1px;
+    border-radius: 12px; padding: 16px; cursor: pointer;
+  }
+  .genbtn:disabled { background: #f4c4a8; cursor: not-allowed; }
+  .genhint { text-align: center; font-size: 13px; color: #b0b0b0; margin-top: 10px; }
+
+  .console {
+    display: none; background: #16161a; color: #d9f7e3; border-radius: 14px;
+    padding: 22px 24px; font-family: "SF Mono", Menlo, monospace; font-size: 13.5px;
+    line-height: 1.9; margin-bottom: 40px; min-height: 60px;
+  }
+  .console .cl-orange { color: #f2905a; }
+  .console .cl-dim { color: #7a7a7a; }
+
+  .episode { display: none; margin-bottom: 16px; }
   .episode.show { display: block; }
-  .section-label {
-    font-family: Georgia, serif;
-    font-size: 26px;
-    font-weight: 700;
-    margin: 48px 0 6px;
-  }
-  .section-note { color: #8a8a8a; font-size: 14px; margin-bottom: 22px; }
-  .cards { display: grid; gap: 14px; }
-  .card {
-    position: relative;
-    border: 1px solid #ececec;
-    border-radius: 14px;
-    padding: 20px 22px;
-    background: #fff;
-  }
+  .ephead { display: flex; align-items: center; gap: 18px; margin: 56px 0 20px; }
+  .ephead img { width: 150px; border-radius: 10px; }
+  .ephead .et { font-family: Georgia, serif; font-size: 24px; font-weight: 700; line-height: 1.2; }
+  .ephead .ed { font-size: 13px; color: #8a8a8a; margin-top: 4px; }
+
+  .section-label { font-family: Georgia, serif; font-size: 22px; font-weight: 700; margin: 36px 0 4px; }
+  .section-note { color: #8a8a8a; font-size: 13.5px; margin-bottom: 16px; }
+  .cards { display: grid; gap: 12px; }
+  .card { position: relative; border: 1px solid #ececec; border-radius: 12px; padding: 18px 20px; background: #fff; }
   .card .stamp {
-    display: inline-block;
-    background: #f26522;
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    border-radius: 999px;
-    padding: 3px 12px;
-    margin-bottom: 10px;
+    display: inline-block; background: #f26522; color: #fff; font-size: 12px; font-weight: 700;
+    border-radius: 999px; padding: 3px 12px; margin-bottom: 8px;
   }
-  .card h3 { font-size: 17px; margin-bottom: 6px; }
-  .card p { font-size: 15px; color: #4a4a4a; white-space: pre-line; }
-  .card .why { margin-top: 10px; font-size: 13.5px; color: #f26522; font-weight: 600; }
+  .card h3 { font-size: 16.5px; margin-bottom: 5px; }
+  .card p { font-size: 14.5px; color: #4a4a4a; white-space: pre-line; }
+  .card .why { margin-top: 8px; font-size: 13px; color: #f26522; font-weight: 600; }
   .copybtn {
-    position: absolute;
-    top: 16px; right: 16px;
-    border: 1.5px solid #f26522;
-    color: #f26522;
-    background: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 999px;
-    padding: 4px 14px;
-    cursor: pointer;
+    position: absolute; top: 14px; right: 14px; border: 1.5px solid #f26522; color: #f26522;
+    background: #fff; font-size: 11.5px; font-weight: 700; border-radius: 999px;
+    padding: 3px 13px; cursor: pointer;
   }
   .copybtn:hover { background: #f26522; color: #fff; }
-  .email {
-    position: relative;
-    border: 1px solid #ececec;
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .email .bar {
-    background: #fafafa;
-    border-bottom: 1px solid #ececec;
-    padding: 12px 22px;
-    font-size: 13px;
-    color: #8a8a8a;
-  }
+  .email { position: relative; border: 1px solid #ececec; border-radius: 12px; overflow: hidden; }
+  .email .bar { background: #fafafa; border-bottom: 1px solid #ececec; padding: 11px 20px; font-size: 13px; color: #8a8a8a; }
   .email .bar b { color: #16161a; }
-  .email .body { padding: 26px 22px; font-size: 15px; color: #333; white-space: pre-line; position: relative; }
-  .posts { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  .email .body { padding: 22px 20px; font-size: 14.5px; color: #333; white-space: pre-line; }
+  .posts { display: grid; gap: 12px; grid-template-columns: 1fr; }
   @media (min-width: 760px) { .posts { grid-template-columns: 1fr 1fr 1fr; } }
-  .mindshift {
-    margin-top: 88px;
-    border-top: 2px solid #f2f2f2;
-    padding-top: 64px;
-  }
-  .closing {
-    margin-top: 88px;
-    border-top: 2px solid #f2f2f2;
-    padding-top: 48px;
-    max-width: 640px;
-  }
-  .closing p { font-size: 17px; color: #333; margin-bottom: 18px; }
-  .closing .sig { font-family: Georgia, serif; font-style: italic; font-size: 19px; color: #16161a; }
+
+  .mindshift { margin-top: 88px; border-top: 2px solid #f2f2f2; padding-top: 56px; }
+  .closing { margin-top: 72px; border-top: 2px solid #f2f2f2; padding-top: 44px; max-width: 640px; }
+  .closing p { font-size: 16.5px; color: #333; margin-bottom: 16px; }
+  .closing .sig { font-family: Georgia, serif; font-style: italic; font-size: 19px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <img class="logo" src="photos/jm-logo.jpg" alt="JM Coaching">
   <div class="eyebrow">For Joel Mccleoud</div>
-  <h1>One recording becomes <span class="hl">EVERYTHING</span>.</h1>
-  <p class="sub">Joel, I took your three latest episodes and ran them through the system I have built for you. This is what comes out of every episode you record, every week, without you touching anything. Pick an episode.</p>
+  <h1>Drop an episode.<br>Get the <span class="hl">WHOLE WEEK</span>.</h1>
+  <p class="sub">This is the engine I built for you, Joel. Pick any episodes of the show, hit generate, and watch one recording become the Shorts, the newsletter, the community posts and the show notes. This trial runs on your six latest episodes.</p>
 
-  <div class="tabs" id="tabs"></div>
+  <div class="genbox">
+    <div class="lbl">1 · Pick your episodes</div>
+    <div class="picker" id="picker"></div>
+    <div class="orline">OR PASTE AN EPISODE LINK</div>
+    <div class="linkrow">
+      <input id="linkin" type="text" placeholder="https://www.youtube.com/watch?v=...">
+      <button onclick="addLink()">Add</button>
+    </div>
+    <button class="genbtn" id="genbtn" onclick="generate()" disabled>GENERATE THE WEEK</button>
+    <div class="genhint" id="genhint">Pick at least one episode to fire the engine.</div>
+  </div>
 
+  <div class="console" id="console"></div>
   <div id="episodes"></div>
 
   <div class="mindshift">
@@ -148,12 +139,12 @@
     <div class="email">
       <div class="bar">From: <b>Joel Mccleoud</b> &nbsp;·&nbsp; To: <b>you</b> &nbsp;·&nbsp; 6:00am</div>
       <div class="body" id="daily-body"></div>
-      <button class="copybtn" style="position:absolute; margin:12px;" onclick="copyText('daily-body', this)">Copy</button>
+      <button class="copybtn" onclick="copyText('daily-body', this)">Copy</button>
     </div>
   </div>
 
   <div class="closing">
-    <p>This is what your week looks like when I am running it. You sit down with Molly once a week and record. Everything else you just scrolled past happens on its own.</p>
+    <p>This is what your week looks like when I am running it. You sit down with Molly once a week and record. Everything else you just generated happens on its own.</p>
     <p>This is everything I know so far about you. If you have any other businesses, keep in mind I can help with those as well.</p>
     <p>I am just letting you know that I can do anything for you.</p>
     <p class="sig">Bhavjot</p>
@@ -163,7 +154,7 @@
 <script>
 const EPISODES = [
   {
-    id: "ep17",
+    id: "ep17", vid: "h6-c_Uabofg",
     title: "The Wealth Secret Nobody Talks About",
     meta: "EP17 · 4 Nov 2026 · 11:05",
     thumb: "photos/ep17.jpg",
@@ -201,12 +192,12 @@ P.S. If you are serious about changing your results and you want to work with me
       "Impression breaks down to 'I am press'. Whatever follows your I AM is being impressed on your subconscious.",
       "If 51% or more of your thoughts are on wealth, the scale tips and results must follow.",
       "Prosperity consciousness means being aware of already having, before the money shows up.",
-      "Persistence is the test. As Joel's mentor example shows, borrowed belief works until your own catches up."
+      "Persistence is the test. Borrowed belief works until your own catches up."
     ],
     notesQuote: "You could be in the desert in Saudi Arabia thinking I am abundant, and money has to come to you. We do not know how. It has to."
   },
   {
-    id: "ep16",
+    id: "ep16", vid: "79z8ijOBp6w",
     title: "Why Faith Changes Everything",
     meta: "EP16 · 28 Oct 2026 · 10:59",
     thumb: "photos/ep16.jpg",
@@ -247,7 +238,7 @@ Joel`,
     notesQuote: "Faith and fear both demand that you believe in something you cannot see. You are always doing one of them."
   },
   {
-    id: "ep15",
+    id: "ep15", vid: "bz27_ncnbsY",
     title: "How I Became Top 1% Bob Proctor Consultant",
     meta: "EP15 · 22 Oct 2026 · 14:21",
     thumb: "photos/ep15.jpg",
@@ -287,6 +278,133 @@ P.S. If you want to compress that timeline, this is exactly what I do with clien
       "Authority is built by doing, then teaching. He learned the material by living it first."
     ],
     notesQuote: "I got kicked out of school at 13. I were not the cleverest person. But I applied myself, and I learned the relationship between the conscious mind, the subconscious mind, and the body."
+  },
+  {
+    id: "ep14", vid: "4at1xy6Zsns",
+    title: "Manifestation Becomes Easy When You Understand This",
+    meta: "EP14 · 13 Oct 2026 · 13:13",
+    thumb: "photos/ep14.jpg",
+    shorts: [
+      { time: "0:29", title: "Manifestation Is Not a Game of Getting", why: "The core reframe of the whole episode lands in the first minute. Perfect cold open." },
+      { time: "1:18", title: "The Law of Reversibility, Explained With Flowers", why: "Neville Goddard made simple through an everyday example. New viewers finally 'get' feeling-first, and they comment saying so." },
+      { time: "3:28", title: "The Mental Conversation Behind £100K Months", why: "His exact inner dialogue, word for word. People screenshot this kind of thing, and screenshots travel." },
+      { time: "7:49", title: "Your Bank Balance Is Doing Your Thinking", why: "The £10K loop. Everyone watching has lived this loop, so the mirror moment holds them to the end." },
+      { time: "9:19", title: "Two Years of Believing Before the £100K Month", why: "Set the goal two years ago, hit it two months ago. The long game told in 40 seconds, pure fuel for anyone about to quit." }
+    ],
+    newsletterSubject: "Stop trying to GET it",
+    newsletter: `Quick truth for you today.
+
+Manifestation is not a game of getting something. It is a game of feeling like you already have it.
+
+Neville Goddard called it the law of reversibility. Steam becomes water, water becomes steam. If a thing can cause a feeling, then the feeling can cause the thing. So if you feel abundant first, before the evidence, situations that match abundance have to show up.
+
+Most people do it backwards. They wait for the sale to feel rich. They wait for the evidence to feel certain. And they wait forever, because the feeling was the cause all along.
+
+Here is the practice. Start having mental conversations as if the goal is already done. Not "please show me how." Try "why does this come so easily to me?" Two different thoughts. Two completely different feelings. Only one of them is the feeling of having.
+
+One of my clients in Ireland went from 5,000 a month to over 15,000 a month in five and a half months. The only thing we changed was what his subconscious believed was normal.
+
+Change normal. The rest follows.
+
+Joel`,
+    posts: [
+      { label: "Quote", text: "Manifestation is not a game of getting.\n\nIt is a game of feeling like you already have it.\n\nNew episode is live. EP14." },
+      { label: "Poll", text: "Be honest. What is doing your thinking right now?\n\nA) My vision\nB) My bank balance\n\nNo judgement. Just notice." },
+      { label: "Engagement", text: "Write your mental conversation as if the goal is DONE.\n\nOne line, present tense, in the comments. I am reading every one." }
+    ],
+    notesSummary: "Joel reframes manifestation completely: it is not about getting, it is about feeling like you already have. Through Neville Goddard's law of reversibility, mental conversations, and a client story from Ireland (5,000 to 15,000+ a month), he shows why the feeling is the cause and the evidence is the echo.",
+    notesTakeaways: [
+      "The feeling creates the thing, never the other way around.",
+      "You cannot feel something you have not thought first. Guard the mental conversation.",
+      "If your current bank balance controls your thinking, your income cannot improve. The loop only breaks from inside.",
+      "Everything is created twice: first in the spiritual, then in the physical.",
+      "Investment collapses time. Skin in the game makes the material click faster."
+    ],
+    notesQuote: "You do not have to rely on the outside world to generate a feeling. Close your eyes for 30 seconds and think I am so abundant. You just generated it."
+  },
+  {
+    id: "ep13", vid: "HS5erOYsEyI",
+    title: "The 3 Habits That Make You Unstoppable",
+    meta: "EP13 · 7 Oct 2026 · 13:50",
+    thumb: "photos/ep13.jpg",
+    shorts: [
+      { time: "0:35", title: "The Quickest Way to Speed Up Receiving", why: "Gratitude as a strategy, not a mood. The 10-things-every-morning ritual is instantly stealable, which makes it shareable." },
+      { time: "1:39", title: "I Write Down 5 Things I Do Not Have Yet", why: "Gratitude in advance, with the Rolex story as proof he actually lives it. Aspirational and practical at once." },
+      { time: "4:09", title: "If I Do Not Have My Goal Card, I Owe You £1,000", why: "The stakes make the habit unforgettable. Ends with him kicking paying clients off Zoom for not having theirs. People argue in the comments, and arguments are reach." },
+      { time: "8:03", title: "Read Your Goal 50 Times a Day", why: "The 5-alarm system, 1,400 repetitions a month. Numbers make it feel doable, and doable gets saved." },
+      { time: "9:13", title: "I Journal to God Every Morning", why: "The third habit plus the ASCEND event mention. This clip quietly sells the room while teaching." }
+    ],
+    newsletterSubject: "Thank you is the vibration of completion",
+    newsletter: `Three habits. That is all. But they run my whole life.
+
+One. Gratitude, every morning, before anything else. Ten things I have, written down. Then five things I do not have yet, written as if I already do. Thank you is the vibration of completion. You can only say it from already having.
+
+Two. The goal card. "I am so happy and grateful now that..." and then the goal. It never leaves my pocket. If you stopped me in the gym and I did not have it on me, I would owe you £1,000. It has never happened.
+
+Three. Journaling as if the goal is already achieved. Every morning, writing the day from the end, not from the hope.
+
+None of this is complicated. That is exactly why people skip it. We become what we think about all day long, and these three habits decide what that is.
+
+Start with the card. Today.
+
+Joel`,
+    posts: [
+      { label: "Quote", text: "\"I want\" tells the universe you do not have it.\n\n\"Thank you\" tells it you do.\n\nEP13 is live. Three habits. That is all." },
+      { label: "Poll", text: "Real question. Do you have your goal card on you right now?\n\nA) Always\nB) What goal card\n\nB is why the results have not moved yet." },
+      { label: "Engagement", text: "Ten things you are grateful for. Go.\n\nFirst one in the comments, keep them coming. Small counts." }
+    ],
+    notesSummary: "The exact daily operating system behind Joel's results: gratitude practiced in advance, the goal card that never leaves his pocket, and journaling from the end. Includes the 5-alarm repetition system (50 reads a day, 1,400 a month) and why he removes clients from calls who show up without their card.",
+    notesTakeaways: [
+      "Gratitude is the fastest way to speed up receiving. It hooks you to the source of supply.",
+      "Be grateful in advance for what is coming. Thank you implies having, wanting implies lack.",
+      "The goal in your pocket becomes the dominant thought. The dominant thought reproduces itself in results.",
+      "Writing causes thinking, thinking causes feeling, feeling causes action, action causes results.",
+      "Environment beats willpower. Cards around the house and alarms through the day make forgetting impossible."
+    ],
+    notesQuote: "Everything I have ever written on a goal card, I have got."
+  },
+  {
+    id: "ep12", vid: "aQYwuoSOFrA",
+    title: "Repetition Will Change Your Life",
+    meta: "EP12 · 30 Sept 2026 · 9:02",
+    thumb: "photos/ep12.jpg",
+    shorts: [
+      { time: "0:22", title: "You Only Know Your Own Name Through Repetition", why: "Reframes something mundane into proof. The 'oh, I never thought of it like that' moment in the first 20 seconds." },
+      { time: "1:46", title: "This Is Why You Believed in Santa Claus", why: "The subconscious cannot reject, only accept. A childhood example makes a deep concept land instantly." },
+      { time: "4:42", title: "People Quit One Week Before the Breakthrough", why: "The gym-mirror analogy. Everyone has quit something too early, so this one hits personally." },
+      { time: "5:24", title: "Absence of Evidence Is Not Evidence of Absence", why: "His first five-figure month looked like nothing for 14 days. The title alone is a quotable, and quotables get saved." },
+      { time: "7:51", title: "The Waldorf Valet Works Harder Than Me", why: "£300 a month for 50-hour weeks versus a belief system. Kills the 'work harder' programming in one story." }
+    ],
+    newsletterSubject: "25 years of a lie takes repetition to undo",
+    newsletter: `Here is something most people never question.
+
+You know your name through repetition. You learned to walk, to drive, your times tables, all through repetition. Everything you believe today, you believe because it was repeated to you.
+
+Which means every belief you do not want can be replaced the exact same way.
+
+Someone who believes money is hard to earn did not hear it once. They heard it for 25 years. So of course one week of affirmations feels like it is not working. You are not failing, you are out-repetitioned. For now.
+
+The subconscious cannot reject anything. It can only accept, and it accepts whatever it hears most. So stop feeding the old belief and let it die through lack of nutrition. Repeat the new one until it becomes the dominant thought.
+
+Money flows to me easily and frequently. Say it today. Say it tomorrow. Say it when nothing looks different, because the last thing to appear is the results.
+
+That does not mean it is not happening.
+
+Joel`,
+    posts: [
+      { label: "Quote", text: "Money flows to me easily and frequently.\n\nSay it until your subconscious has no choice.\n\nEP12 is live." },
+      { label: "Poll", text: "How many times have you repeated your goal today?\n\nA) 50+\nB) Starting now\n\nThe goal card is not decoration. It is the work." },
+      { label: "Engagement", text: "Name the old belief you are starving this month.\n\nOne line in the comments. Starve it out loud." }
+    ],
+    notesSummary: "Why repetition is the mechanism behind every belief you hold, and how to use it deliberately. Joel covers the Santa Claus principle (the subconscious accepts, never rejects), why people quit days before the breakthrough, and the exact belief he installed to replace 'money is hard to earn.'",
+    notesTakeaways: [
+      "Every belief is repetition that hardened. New belief, same method.",
+      "The subconscious cannot reject. Whoever repeats most, wins.",
+      "Starve the old belief. Do not fight it, just stop feeding it.",
+      "The results are the last thing to appear. Quitting at week four is quitting at the iceberg's tip.",
+      "Hard work is not the variable. The belief system underneath the work is."
+    ],
+    notesQuote: "Absence of evidence is not evidence of absence. The last thing to show up is the results, but that does not mean it is not happening."
   }
 ];
 
@@ -310,18 +428,96 @@ Joel
 
 You are getting this because you downloaded the morning routine guide. Tomorrow, 6am, same place.`;
 
-const tabsEl = document.getElementById("tabs");
+const selected = new Set();
+const pickerEl = document.getElementById("picker");
 const epsEl = document.getElementById("episodes");
+const consoleEl = document.getElementById("console");
+const genbtn = document.getElementById("genbtn");
+const genhint = document.getElementById("genhint");
 
-EPISODES.forEach((ep, i) => {
-  const tab = document.createElement("button");
-  tab.className = "tab" + (i === 0 ? " active" : "");
-  tab.innerHTML = `<img src="${ep.thumb}" alt=""><div class="tmeta"><div class="tt">${ep.title}</div><div class="td">${ep.meta}</div></div>`;
-  tab.onclick = () => select(ep.id, tab);
-  tabsEl.appendChild(tab);
+EPISODES.forEach(ep => {
+  const b = document.createElement("button");
+  b.className = "pick";
+  b.id = "pick-" + ep.id;
+  b.innerHTML = `<span class="tick">✓</span><img src="${ep.thumb}" alt=""><div class="pm"><div class="pt">${ep.title}</div><div class="pd">${ep.meta}</div></div>`;
+  b.onclick = () => toggle(ep.id);
+  pickerEl.appendChild(b);
+});
 
+document.getElementById("daily-body").textContent = DAILY;
+
+function toggle(id) {
+  if (selected.has(id)) selected.delete(id); else selected.add(id);
+  document.getElementById("pick-" + id).classList.toggle("on", selected.has(id));
+  refreshBtn();
+}
+
+function refreshBtn() {
+  genbtn.disabled = selected.size === 0;
+  genhint.textContent = selected.size === 0
+    ? "Pick at least one episode to fire the engine."
+    : selected.size + (selected.size === 1 ? " episode" : " episodes") + " loaded in the chamber.";
+}
+
+function addLink() {
+  const v = document.getElementById("linkin").value.trim();
+  const m = v.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
+  if (!m) { genhint.textContent = "That does not look like a YouTube link. Try again."; return; }
+  const ep = EPISODES.find(e => e.vid === m[1]);
+  if (!ep) { genhint.textContent = "This trial build runs on the six latest episodes shown above. The full build handles every video you have ever posted."; return; }
+  if (!selected.has(ep.id)) toggle(ep.id);
+  document.getElementById("linkin").value = "";
+  genhint.textContent = ep.title + " pulled in. Ready.";
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function clog(html) {
   const div = document.createElement("div");
-  div.className = "episode" + (i === 0 ? " show" : "");
+  div.innerHTML = html;
+  consoleEl.appendChild(div);
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
+async function generate() {
+  if (selected.size === 0) return;
+  genbtn.disabled = true;
+  epsEl.innerHTML = "";
+  consoleEl.innerHTML = "";
+  consoleEl.style.display = "block";
+  consoleEl.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  const list = EPISODES.filter(e => selected.has(e.id));
+  clog(`<span class="cl-dim">// engine fired · ${list.length} episode${list.length > 1 ? "s" : ""} in the queue</span>`);
+  await sleep(500);
+
+  for (const ep of list) {
+    clog(`<span class="cl-orange">▸ ${ep.title}</span>`);
+    const steps = [
+      "pulling transcript...",
+      "listening in your voice...",
+      "selecting the moments...",
+      "writing the newsletter...",
+      "drafting community posts...",
+      "building show notes..."
+    ];
+    for (const s of steps) {
+      clog(`<span class="cl-dim">   ${s}</span>`);
+      await sleep(380 + Math.random() * 260);
+    }
+    clog(`<span>   ✓ done: ${ep.shorts.length} shorts · 1 newsletter · ${ep.posts.length} posts · show notes</span>`);
+    renderEpisode(ep);
+    document.getElementById(ep.id).classList.add("show");
+    await sleep(350);
+  }
+
+  clog(`<span class="cl-orange">▸ the week is built. every word ready to ship. scroll down.</span>`);
+  genbtn.disabled = false;
+}
+
+function renderEpisode(ep) {
+  const div = document.createElement("div");
+  div.className = "episode";
   div.id = ep.id;
 
   const shortsHtml = ep.shorts.map((s, j) => `
@@ -342,6 +538,11 @@ EPISODES.forEach((ep, i) => {
   const takeawaysHtml = ep.notesTakeaways.map(t => `<p>· ${t}</p>`).join("");
 
   div.innerHTML = `
+    <div class="ephead">
+      <img src="${ep.thumb}" alt="">
+      <div><div class="et">${ep.title}</div><div class="ed">${ep.meta} · generated just now</div></div>
+    </div>
+
     <div class="section-label">The Shorts</div>
     <div class="section-note">Cut from this episode, timestamps ready, titles written. Each one engineered to end with the viewer wanting the full episode.</div>
     <div class="cards">${shortsHtml}</div>
@@ -351,7 +552,7 @@ EPISODES.forEach((ep, i) => {
     <div class="email">
       <div class="bar">From: <b>Joel Mccleoud</b> &nbsp;·&nbsp; Subject: <b>${ep.newsletterSubject}</b></div>
       <div class="body" id="${ep.id}-nl">${ep.newsletter}</div>
-      <button class="copybtn" style="position:absolute; margin:12px;" onclick="copyText('${ep.id}-nl', this)">Copy</button>
+      <button class="copybtn" onclick="copyText('${ep.id}-nl', this)">Copy</button>
     </div>
 
     <div class="section-label">The community tab</div>
@@ -365,23 +566,13 @@ EPISODES.forEach((ep, i) => {
       <div id="${ep.id}-notes">
       <h3>About this episode</h3>
       <p>${ep.notesSummary}</p>
-      <h3 style="margin-top:16px;">What you will take from it</h3>
+      <h3 style="margin-top:14px;">What you will take from it</h3>
       ${takeawaysHtml}
-      <h3 style="margin-top:16px;">The line of the episode</h3>
+      <h3 style="margin-top:14px;">The line of the episode</h3>
       <p>"${ep.notesQuote}"</p>
       </div>
     </div>`;
   epsEl.appendChild(div);
-});
-
-document.getElementById("daily-body").textContent = DAILY;
-
-function select(id, tab) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  document.querySelectorAll(".episode").forEach(e => e.classList.remove("show"));
-  tab.classList.add("active");
-  document.getElementById(id).classList.add("show");
-  window.scrollTo({ top: tabsEl.offsetTop - 20, behavior: "smooth" });
 }
 
 function copyText(id, btn) {
