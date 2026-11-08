@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Recording Becomes Everything | For Joel Mccleoud</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #ffffff;
+    color: #16161a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 48px 24px 96px; }
+  .logo { display: block; margin: 0 auto 56px; width: 88px; }
+  .eyebrow {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #8a8a8a;
+    margin-bottom: 18px;
+  }
+  h1 {
+    text-align: center;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 5.4vw, 58px);
+    font-weight: 700;
+    line-height: 1.12;
+    margin-bottom: 22px;
+  }
+  h1 .hl { background: #f26522; color: #fff; padding: 0 14px; }
+  .sub {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 64px;
+    font-size: 18px;
+    color: #4a4a4a;
+  }
+  .tabs { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 56px; }
+  .tab {
+    cursor: pointer;
+    border: 2px solid #ececec;
+    border-radius: 14px;
+    overflow: hidden;
+    width: 280px;
+    background: #fff;
+    transition: border-color .2s, transform .2s;
+    text-align: left;
+  }
+  .tab:hover { transform: translateY(-3px); }
+  .tab.active { border-color: #f26522; }
+  .tab img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+  .tab .tmeta { padding: 12px 14px 14px; }
+  .tab .tt { font-weight: 700; font-size: 15px; line-height: 1.35; }
+  .tab .td { font-size: 13px; color: #8a8a8a; margin-top: 4px; }
+  .episode { display: none; }
+  .episode.show { display: block; }
+  .section-label {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 48px 0 6px;
+  }
+  .section-note { color: #8a8a8a; font-size: 14px; margin-bottom: 22px; }
+  .cards { display: grid; gap: 14px; }
+  .card {
+    position: relative;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    padding: 20px 22px;
+    background: #fff;
+  }
+  .card .stamp {
+    display: inline-block;
+    background: #f26522;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    border-radius: 999px;
+    padding: 3px 12px;
+    margin-bottom: 10px;
+  }
+  .card h3 { font-size: 17px; margin-bottom: 6px; }
+  .card p { font-size: 15px; color: #4a4a4a; white-space: pre-line; }
+  .card .why { margin-top: 10px; font-size: 13.5px; color: #f26522; font-weight: 600; }
+  .copybtn {
+    position: absolute;
+    top: 16px; right: 16px;
+    border: 1.5px solid #f26522;
+    color: #f26522;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 14px;
+    cursor: pointer;
+  }
+  .copybtn:hover { background: #f26522; color: #fff; }
+  .email {
+    position: relative;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .email .bar {
+    background: #fafafa;
+    border-bottom: 1px solid #ececec;
+    padding: 12px 22px;
+    font-size: 13px;
+    color: #8a8a8a;
+  }
+  .email .bar b { color: #16161a; }
+  .email .body { padding: 26px 22px; font-size: 15px; color: #333; white-space: pre-line; position: relative; }
+  .posts { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .posts { grid-template-columns: 1fr 1fr 1fr; } }
+  .mindshift {
+    margin-top: 88px;
+    border-top: 2px solid #f2f2f2;
+    padding-top: 64px;
+  }
+  .closing {
+    margin-top: 88px;
+    border-top: 2px solid #f2f2f2;
+    padding-top: 48px;
+    max-width: 640px;
+  }
+  .closing p { font-size: 17px; color: #333; margin-bottom: 18px; }
+  .closing .sig { font-family: Georgia, serif; font-style: italic; font-size: 19px; color: #16161a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo" src="photos/jm-logo.jpg" alt="JM Coaching">
+  <div class="eyebrow">For Joel Mccleoud</div>
+  <h1>One recording becomes <span class="hl">EVERYTHING</span>.</h1>
+  <p class="sub">Joel, I took your three latest episodes and ran them through the system I have built for you. This is what comes out of every episode you record, every week, without you touching anything. Pick an episode.</p>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="episodes"></div>
+
+  <div class="mindshift">
+    <div class="section-label">And while all of that runs, your list wakes up to you.</div>
+    <div class="section-note">MindShift Daily. A short email in your voice, built from your own episodes, in every subscriber's inbox at 6am. You never write it. It just goes.</div>
+    <div class="email">
+      <div class="bar">From: <b>Joel Mccleoud</b> &nbsp;·&nbsp; To: <b>you</b> &nbsp;·&nbsp; 6:00am</div>
+      <div class="body" id="daily-body"></div>
+      <button class="copybtn" style="position:absolute; margin:12px;" onclick="copyText('daily-body', this)">Copy</button>
+    </div>
+  </div>
+
+  <div class="closing">
+    <p>This is what your week looks like when I am running it. You sit down with Molly once a week and record. Everything else you just scrolled past happens on its own.</p>
+    <p>This is everything I know so far about you. If you have any other businesses, keep in mind I can help with those as well.</p>
+    <p>I am just letting you know that I can do anything for you.</p>
+    <p class="sig">Bhavjot</p>
+  </div>
+</div>
+
+<script>
+const EPISODES = [
+  {
+    id: "ep17",
+    title: "The Wealth Secret Nobody Talks About",
+    meta: "EP17 · 4 Nov 2026 · 11:05",
+    thumb: "photos/ep17.jpg",
+    shorts: [
+      { time: "1:58", title: "The Two Most Powerful Words in English", why: "Direct teaching, instantly quotable. 'Impress means I am press. What are you pressing on your I AM?' is a comment magnet." },
+      { time: "3:24", title: "The Only Difference Between a Rich Person and a Poor Person", why: "One-line contrast, perfect Short structure. Ends on 'let the weak man say I am strong' which sends people to the full episode." },
+      { time: "5:20", title: "Bob Proctor's Question That Exposes Your Mind", why: "'How much are you earning right now? That is the expression.' Uncomfortable truth hooks perform best on this channel." },
+      { time: "8:46", title: "Conor McGregor Slept With The Belt", why: "Story + visual + emotion. Non-subscribers share stories, and shares are what grow the channel." },
+      { time: "9:36", title: "I Pay £5,500 a Month for 15 Minutes a Week", why: "Curiosity and mild disbelief in the title. This is the one that pulls cold viewers into your world and straight to the call link." }
+    ],
+    newsletterSubject: "Your money does not come FROM your clients",
+    newsletter: `Think about this for a second.
+
+There is no such thing as rich people and poor people. There are only rich thinkers and poor thinkers.
+
+Every result comes from an action. Every action comes from a feeling. And every feeling is produced by a thought. That is the whole chain. So when you try to change the result, you are standing in front of a mirror trying to straighten the tie on the reflection. It will never move. You have to change the cause, and the cause is your thinking.
+
+My money does not come from my clients. It comes through my clients. Wealth is created from one place only, and that place is thought.
+
+So here is your work for today. Catch yourself every time you say "I am" and listen to what comes next. Impress means I am press. Whatever you are pressing on your I AM is what you are about to live.
+
+Press something worth living.
+
+Joel
+
+P.S. If you are serious about changing your results and you want to work with me directly, book a one-to-one call through the link in my bio. We will see if you are the right fit.`,
+    posts: [
+      { label: "Poll", text: "Honest question. What have you been pressing on your I AM this week?\n\nA) I am wealthy\nB) I am struggling\n\nBe honest. Awareness is the first shift." },
+      { label: "Quote", text: "There is no such thing as rich people and poor people.\n\nOnly rich thinkers and poor thinkers.\n\nNew episode is live. EP17." },
+      { label: "Engagement", text: "Finish this sentence in the comments:\n\n\"I am so happy and grateful now that ___\"\n\nWrite it in present tense. I read every single one." }
+    ],
+    notesSummary: "Joel breaks down why wealth is created in one place only: thought. The episode walks the full chain from thought to feeling to action to result, explains why trying to change results directly never works, and shows how the two words 'I am' decide every financial outcome.",
+    notesTakeaways: [
+      "Results are effects. Thinking is the cause. Change the cause and the effect has no choice.",
+      "Impression breaks down to 'I am press'. Whatever follows your I AM is being impressed on your subconscious.",
+      "If 51% or more of your thoughts are on wealth, the scale tips and results must follow.",
+      "Prosperity consciousness means being aware of already having, before the money shows up.",
+      "Persistence is the test. As Joel's mentor example shows, borrowed belief works until your own catches up."
+    ],
+    notesQuote: "You could be in the desert in Saudi Arabia thinking I am abundant, and money has to come to you. We do not know how. It has to."
+  },
+  {
+    id: "ep16",
+    title: "Why Faith Changes Everything",
+    meta: "EP16 · 28 Oct 2026 · 10:59",
+    thumb: "photos/ep16.jpg",
+    shorts: [
+      { time: "0:25", title: "Faith Is Seeing The Invisible", why: "The strongest definition lands in the first 40 seconds. Open the Short cold with it, no intro needed." },
+      { time: "1:53", title: "Hope Says Maybe. Faith Says It Will.", why: "Clean contrast, Napoleon Hill reference gives it authority. Highly saveable, and saves push reach." },
+      { time: "4:56", title: "£15,000 a Year to £15,000 a Month", why: "His own numbers, his own story. Proof beats theory every time on Shorts." },
+      { time: "7:09", title: "My £100K Month Took 21 Months to Show Up", why: "Kills the 'it didn't work for me' objection before it forms. Speaks directly to everyone about to quit." },
+      { time: "9:22", title: "Tell Yourself a Lie 500 Times a Day", why: "Pattern interrupt in the title, pure practical value inside. This is the clip people send to friends." }
+    ],
+    newsletterSubject: "Hope is the reason it has not happened yet",
+    newsletter: `There is a massive difference between hope and faith, and most people never notice it.
+
+Hope says it might happen. Faith says it will happen. It has no other choice.
+
+Napoleon Hill said no one is ready for a thing until they believe they can have it. Not hope. Believe.
+
+Here is why that matters. Your five senses will lie to you every single day. They will show you the bank account, the viewer count, the current results, and they will call it reality. But to believe in the things you can see and touch is not belief at all. To believe in the unseen, that is the triumph.
+
+Three years ago my senses told me I earned £15,000 a year. I denied what I could see. I held a new idea until my behavior changed, and then my results changed. Less than six months.
+
+Your turn. Write down what you want, in present tense, like you already own it. Read it until it stops feeling foreign. That feeling shifting is faith being built.
+
+Joel`,
+    posts: [
+      { label: "Quote", text: "Hope is it might happen.\nFaith is it will happen.\n\nOne of these is running your life right now. New episode out now." },
+      { label: "Poll", text: "Where are you right now, honestly?\n\nA) Hoping it happens\nB) Knowing it will\n\nNo wrong answers. Just awareness." },
+      { label: "Engagement", text: "Faith is built through repetition.\n\nDrop the one line you are repeating daily in the comments. I will go first in the replies." }
+    ],
+    notesSummary: "Joel defines faith as the ability to see the invisible, separates it from hope, and explains why living through the five senses keeps people stuck. He shares how he turned a £15,000 yearly income into a monthly one by denying his senses, and why a £100K month took 21 months of unseen persistence.",
+    notesTakeaways: [
+      "Faith is not a wish. It is a state of mind that treats the unseen as already here.",
+      "Hope leaves room for failure. Belief does not.",
+      "The five senses report the past. Imagination reports the future. Choose which one leads.",
+      "Repetition is how faith is installed. The subconscious accepts whatever it hears enough times.",
+      "Delay is not denial. The £100K month existed internally 21 months before it existed in the account."
+    ],
+    notesQuote: "Faith and fear both demand that you believe in something you cannot see. You are always doing one of them."
+  },
+  {
+    id: "ep15",
+    title: "How I Became Top 1% Bob Proctor Consultant",
+    meta: "EP15 · 22 Oct 2026 · 14:21",
+    thumb: "photos/ep15.jpg",
+    shorts: [
+      { time: "1:12", title: "Broke in My Flat. Then One Phone Call Changed Everything.", why: "Story openings hold retention. 'That is a terrible goal' is the hook line that makes people stay." },
+      { time: "2:44", title: "I Withdrew My Last Bitcoin to Pay a Mentor", why: "Skin in the game. People trust teachers who paid the price first, and this proves it in 30 seconds." },
+      { time: "3:40", title: "A Voice Said: Build It. So I Did.", why: "The £100-to-charity first client is the perfect 'start before you are ready' lesson. Huge for aspiring coaches watching." },
+      { time: "5:10", title: "Five and a Half Months Later: £18,000 a Month", why: "The payoff moment. Numbers in titles outperform, and this one is earned, not clickbait." },
+      { time: "5:46", title: "2am in Dubai, a Voice Said: Go Teach It", why: "The origin story of Joel Mccleoud Coaching. This is the clip that builds the brand, not just the views." },
+      { time: "6:36", title: "4,600 Consultants. I Am in the Top 45.", why: "Authority without bragging, because it is framed through gratitude. Ends with him now teaching the consultants who trained him." }
+    ],
+    newsletterSubject: "You do not need to know how (I did not)",
+    newsletter: `I will be honest with you. I never intended any of this.
+
+At 26 I was standing in my flat, broke, doing work I did not want to do. I got on a phone call and a man told me my goal was terrible. He told me to turn my yearly income into my monthly income. I did not believe it was possible, so I borrowed his belief until mine showed up.
+
+I paid the deposit with the little crypto I had. I did not know how I would pay the next installment. I did not need to know how. I needed to start. The way was shown.
+
+Five and a half months later I was making £18,000 a month. Then a voice woke me at 2am in Dubai and told me to go teach it. Today there are 4,600 consultants in the world doing what I do, and I get invited to teach them.
+
+Whatever you are waiting to feel ready for, this is your sign. Start. The how is not your job yet.
+
+Joel
+
+P.S. If you want to compress that timeline, this is exactly what I do with clients one-to-one. The link to book is in my bio.`,
+    posts: [
+      { label: "Story", text: "Kicked out of school at 13.\nBroke at 26.\n£18,000 a month by 27.\nTop 1% Bob Proctor consultant by 29.\n\nThe full story is the new episode. It is not talent. It is a process." },
+      { label: "Quote", text: "You do not need to know how.\n\nYou need to start, and the way will be shown.\n\nEP15 is live." },
+      { label: "Engagement", text: "What would you start TODAY if you knew you did not need to know how?\n\nOne sentence. Comments are open." }
+    ],
+    notesSummary: "The full origin story. From getting kicked out of school at 13, to a broke model at 26, to borrowing a mentor's belief, building an online fitness company to £18,000 a month, and finally answering a 2am call in Dubai to teach. Joel is now in the Circle of Excellence among 4,600 Bob Proctor consultants worldwide and is building his own brand.",
+    notesTakeaways: [
+      "Borrowed belief is a legitimate starting point. Someone else's certainty can carry you until yours arrives.",
+      "Commitment comes before clarity. He paid without knowing how the next installment would come.",
+      "Start with whoever is in front of you. The first client was his sister's boyfriend and £100 to charity.",
+      "Results create evidence, evidence creates belief, belief creates bigger results. The loop compounds.",
+      "Authority is built by doing, then teaching. He learned the material by living it first."
+    ],
+    notesQuote: "I got kicked out of school at 13. I were not the cleverest person. But I applied myself, and I learned the relationship between the conscious mind, the subconscious mind, and the body."
+  }
+];
+
+const DAILY = `Good morning.
+
+Quick one before the world wakes up.
+
+Today, catch every "I am" that leaves your mouth. Each one is a press on your subconscious. I am tired. I am broke. I am busy. Whatever follows those two words, you are ordering more of it.
+
+So today we change the order.
+
+Your 2-minute practice: write this once, read it three times out loud.
+
+"I am so happy and grateful now that everything I need is already on its way to me."
+
+That is it. That is today's rep. Faith is built through repetition, and this is you building.
+
+Win the day before the world wakes up.
+
+Joel
+
+You are getting this because you downloaded the morning routine guide. Tomorrow, 6am, same place.`;
+
+const tabsEl = document.getElementById("tabs");
+const epsEl = document.getElementById("episodes");
+
+EPISODES.forEach((ep, i) => {
+  const tab = document.createElement("button");
+  tab.className = "tab" + (i === 0 ? " active" : "");
+  tab.innerHTML = `<img src="${ep.thumb}" alt=""><div class="tmeta"><div class="tt">${ep.title}</div><div class="td">${ep.meta}</div></div>`;
+  tab.onclick = () => select(ep.id, tab);
+  tabsEl.appendChild(tab);
+
+  const div = document.createElement("div");
+  div.className = "episode" + (i === 0 ? " show" : "");
+  div.id = ep.id;
+
+  const shortsHtml = ep.shorts.map((s, j) => `
+    <div class="card">
+      <button class="copybtn" onclick="copyText('${ep.id}-s${j}', this)">Copy</button>
+      <div class="stamp">SHORT ${j + 1} · ${s.time}</div>
+      <h3 id="${ep.id}-s${j}">${s.title}</h3>
+      <p class="why">Why this one: ${s.why}</p>
+    </div>`).join("");
+
+  const postsHtml = ep.posts.map((p, j) => `
+    <div class="card">
+      <button class="copybtn" onclick="copyText('${ep.id}-p${j}', this)">Copy</button>
+      <div class="stamp">${p.label}</div>
+      <p id="${ep.id}-p${j}">${p.text}</p>
+    </div>`).join("");
+
+  const takeawaysHtml = ep.notesTakeaways.map(t => `<p>· ${t}</p>`).join("");
+
+  div.innerHTML = `
+    <div class="section-label">The Shorts</div>
+    <div class="section-note">Cut from this episode, timestamps ready, titles written. Each one engineered to end with the viewer wanting the full episode.</div>
+    <div class="cards">${shortsHtml}</div>
+
+    <div class="section-label">The newsletter</div>
+    <div class="section-note">Written from this episode, in your voice, to your list. This is the email that keeps you in their head between episodes.</div>
+    <div class="email">
+      <div class="bar">From: <b>Joel Mccleoud</b> &nbsp;·&nbsp; Subject: <b>${ep.newsletterSubject}</b></div>
+      <div class="body" id="${ep.id}-nl">${ep.newsletter}</div>
+      <button class="copybtn" style="position:absolute; margin:12px;" onclick="copyText('${ep.id}-nl', this)">Copy</button>
+    </div>
+
+    <div class="section-label">The community tab</div>
+    <div class="section-note">Three posts per episode. The tab stays alive and the algorithm keeps feeding the channel while you are doing literally anything else.</div>
+    <div class="posts">${postsHtml}</div>
+
+    <div class="section-label">The show notes</div>
+    <div class="section-note">Description, takeaways and the quote card line. Paste-ready for YouTube, Spotify, everywhere the episode lives.</div>
+    <div class="card">
+      <button class="copybtn" onclick="copyText('${ep.id}-notes', this)">Copy</button>
+      <div id="${ep.id}-notes">
+      <h3>About this episode</h3>
+      <p>${ep.notesSummary}</p>
+      <h3 style="margin-top:16px;">What you will take from it</h3>
+      ${takeawaysHtml}
+      <h3 style="margin-top:16px;">The line of the episode</h3>
+      <p>"${ep.notesQuote}"</p>
+      </div>
+    </div>`;
+  epsEl.appendChild(div);
+});
+
+document.getElementById("daily-body").textContent = DAILY;
+
+function select(id, tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".episode").forEach(e => e.classList.remove("show"));
+  tab.classList.add("active");
+  document.getElementById(id).classList.add("show");
+  window.scrollTo({ top: tabsEl.offsetTop - 20, behavior: "smooth" });
+}
+
+function copyText(id, btn) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const old = btn.textContent;
+    btn.textContent = "Copied";
+    setTimeout(() => btn.textContent = old, 1200);
+  });
+}
+</script>
+</body>
+</html>
