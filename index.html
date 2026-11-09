@@ -109,6 +109,25 @@
   .closing { margin-top: 72px; border-top: 2px solid #f2f2f2; padding-top: 44px; max-width: 640px; }
   .closing p { font-size: 16.5px; color: #333; margin-bottom: 16px; }
   .closing .sig { font-family: Georgia, serif; font-style: italic; font-size: 19px; }
+
+  .playbtn {
+    margin-top: 12px; border: none; background: #16161a; color: #fff;
+    font-size: 12.5px; font-weight: 700; border-radius: 999px;
+    padding: 8px 20px; cursor: pointer;
+  }
+  .playbtn:hover { background: #f26522; }
+  .player {
+    display: none; position: fixed; inset: 0; background: rgba(10,10,12,.9);
+    z-index: 50; align-items: center; justify-content: center; flex-direction: column;
+  }
+  .player.show { display: flex; }
+  .player .ptitle { color: #f2905a; font-size: 13px; font-weight: 700; letter-spacing: 2px; margin-bottom: 12px; }
+  .player video { height: 80vh; max-width: 92vw; border-radius: 14px; background: #000; }
+  .player .pclose {
+    margin-top: 16px; border: 1.5px solid #fff; color: #fff; background: none;
+    border-radius: 999px; padding: 6px 24px; font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+  .player .pclose:hover { border-color: #f26522; color: #f2905a; }
 </style>
 </head>
 <body>
@@ -133,6 +152,12 @@
   <div class="console" id="console"></div>
   <div id="episodes"></div>
 
+  <div class="player" id="player" onclick="if(event.target===this)closePlayer()">
+    <div class="ptitle" id="ptitle"></div>
+    <video id="pvideo" controls playsinline preload="none"></video>
+    <button class="pclose" onclick="closePlayer()">Close</button>
+  </div>
+
   <div class="mindshift">
     <div class="section-label">And while all of that runs, your list wakes up to you.</div>
     <div class="section-note">MindShift Daily. A short email in your voice, built from your own episodes, in every subscriber's inbox at 6am. You never write it. It just goes.</div>
@@ -144,9 +169,8 @@
   </div>
 
   <div class="closing">
-    <p>This is what your week looks like when I am running it. You sit down with Molly once a week and record. Everything else you just generated happens on its own.</p>
-    <p>This is everything I know so far about you. If you have any other businesses, keep in mind I can help with those as well.</p>
-    <p>I am just letting you know that I can do anything for you.</p>
+    <p>I am not saying this has to be automated. I am saying this can be automated.</p>
+    <p>Whether it is this or any other business you have, Joel, I can automate it for you.</p>
     <p class="sig">Bhavjot</p>
   </div>
 </div>
@@ -523,9 +547,10 @@ function renderEpisode(ep) {
   const shortsHtml = ep.shorts.map((s, j) => `
     <div class="card">
       <button class="copybtn" onclick="copyText('${ep.id}-s${j}', this)">Copy</button>
-      <div class="stamp">SHORT ${j + 1} · ${s.time}</div>
+      <div class="stamp">SHORT ${j + 1} · ${s.time} · READY</div>
       <h3 id="${ep.id}-s${j}">${s.title}</h3>
       <p class="why">Why this one: ${s.why}</p>
+      <button class="playbtn" onclick="playShort('clips/${ep.id}_s${j + 1}.mp4','clips/${ep.id}_s${j + 1}.jpg','${ep.id.toUpperCase()} · SHORT ${j + 1} · ${s.time}')">▶ Play the Short</button>
     </div>`).join("");
 
   const postsHtml = ep.posts.map((p, j) => `
@@ -544,7 +569,7 @@ function renderEpisode(ep) {
     </div>
 
     <div class="section-label">The Shorts</div>
-    <div class="section-note">Cut from this episode, timestamps ready, titles written. Each one engineered to end with the viewer wanting the full episode.</div>
+    <div class="section-note">Already cut from this episode. Vertical, smart cuts between Joel and Molly, ready to watch. Press play on any of them.</div>
     <div class="cards">${shortsHtml}</div>
 
     <div class="section-label">The newsletter</div>
@@ -573,6 +598,24 @@ function renderEpisode(ep) {
       </div>
     </div>`;
   epsEl.appendChild(div);
+}
+
+function playShort(src, poster, title) {
+  const v = document.getElementById("pvideo");
+  document.getElementById("ptitle").textContent = title;
+  v.poster = poster;
+  v.src = src;
+  document.getElementById("player").classList.add("show");
+  v.play().catch(() => {});
+}
+
+function closePlayer() {
+  const v = document.getElementById("pvideo");
+  v.pause();
+  v.removeAttribute("src");
+  v.removeAttribute("poster");
+  v.load();
+  document.getElementById("player").classList.remove("show");
 }
 
 function copyText(id, btn) {
